@@ -177,7 +177,7 @@ HighsStatus highs_mipPostsolve(Highs* h, const HighsSolution& solution) {
   return h->postsolve(solution);
 }
 
-HighsStatus highs_writeSolution(Highs* h, const std::string filename,
+HighsStatus highs_writeSolution(Highs* h, const std::string& filename,
                                 const HighsInt style) {
   return h->writeSolution(filename, style);
 }
@@ -905,7 +905,7 @@ std::tuple<HighsStatus, std::string> highs_getColName(Highs* h,
 }
 
 std::tuple<HighsStatus, int> highs_getColByName(Highs* h,
-                                                const std::string name) {
+                                                const std::string& name) {
   HighsInt col;
   HighsStatus status = h->getColByName(name, col);
   return std::make_tuple(status, col);
@@ -919,7 +919,7 @@ std::tuple<HighsStatus, std::string> highs_getRowName(Highs* h,
 }
 
 std::tuple<HighsStatus, int> highs_getRowByName(Highs* h,
-                                                const std::string name) {
+                                                const std::string& name) {
   HighsInt row;
   HighsStatus status = h->getRowByName(name, row);
   return std::make_tuple(status, row);
@@ -1270,9 +1270,9 @@ PYBIND11_MODULE(_core, m, py::mod_gil_not_used()) {
       .def_readwrite("timeless_log", &HighsOptions::timeless_log)
       .def_readwrite("ipm_optimality_tolerance", &HighsOptions::ipm_optimality_tolerance)
       .def_readwrite("ipm_iteration_limit", &HighsOptions::ipm_iteration_limit)
-      .def_readwrite("pdlp_scaling", &HighsOptions::pdlp_scaling)
+      .def_readwrite("pdlp_scaling_mode", &HighsOptions::pdlp_scaling_mode)
       .def_readwrite("pdlp_iteration_limit", &HighsOptions::pdlp_iteration_limit)
-      .def_readwrite("pdlp_e_restart_method", &HighsOptions::pdlp_e_restart_method)
+      .def_readwrite("pdlp_cupdlpc_restart_method", &HighsOptions::pdlp_cupdlpc_restart_method)
       .def_readwrite("pdlp_optimality_tolerance", &HighsOptions::pdlp_optimality_tolerance)
       .def_readwrite("qp_iteration_limit", &HighsOptions::qp_iteration_limit)
       .def_readwrite("qp_nullspace_limit", &HighsOptions::qp_nullspace_limit)
@@ -1583,8 +1583,13 @@ PYBIND11_MODULE(_core, m, py::mod_gil_not_used()) {
       .def_readwrite("row_bound_dn", &HighsRanging::row_bound_dn);
   py::class_<HighsIisInfo>(m, "HighsIisInfo", py::module_local())
       .def(py::init<>())
-      .def_readwrite("simplex_time", &HighsIisInfo::simplex_time)
-      .def_readwrite("simplex_iterations", &HighsIisInfo::simplex_iterations);
+      .def_readwrite("num_lp_solved", &HighsIisInfo::num_lp_solved)
+      .def_readwrite("sum_simplex_iteration_counts", &HighsIisInfo::sum_simplex_iteration_counts)
+      .def_readwrite("min_simplex_iteration_count", &HighsIisInfo::min_simplex_iteration_count)
+      .def_readwrite("max_simplex_iteration_count", &HighsIisInfo::max_simplex_iteration_count)
+      .def_readwrite("sum_simplex_times", &HighsIisInfo::sum_simplex_times)
+      .def_readwrite("min_simplex_time", &HighsIisInfo::min_simplex_time)
+      .def_readwrite("max_simplex_time", &HighsIisInfo::max_simplex_time);
   py::class_<HighsLinearObjective>(m, "HighsLinearObjective",
                                    py::module_local())
       .def(py::init<>())
