@@ -16,6 +16,8 @@ bulb build //:TestBasis               # one test; run it from the repo root (see
 Status: built and run on osx-arm64 only, where all 40 tests pass. `bulb.lock`
 solves all five platforms, but nothing else has been built.
 
+Coming from Bazel? See [FROM-BAZEL.md](FROM-BAZEL.md).
+
 ## Compromises
 
 **1. Checked-in config headers.** bulb has no `copy_file` or other generating
