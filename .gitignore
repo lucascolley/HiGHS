@@ -296,3 +296,5 @@ highs-problem-set
 Options.md
 
 build-latest
+# bulb build state
+.bulb/
